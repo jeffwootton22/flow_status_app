@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="utf-8" />
-  <title>Water Sources – Perennial Streams</title>
+  <meta charset="utf-8">
+  <title>Streams</title>
 
-  <!-- Leaflet CSS -->
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -14,64 +13,40 @@
     html, body {
       height: 100%;
       margin: 0;
-      padding: 0;
     }
-
     #map {
       height: 100%;
       width: 100%;
-    }
-
-    .map-title {
-      position: absolute;
-      top: 10px;
-      left: 50px;
-      z-index: 1000;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 6px 10px;
-      border-radius: 4px;
-      font-family: sans-serif;
-      font-size: 14px;
-      box-shadow: 0 0 4px rgba(0,0,0,0.2);
     }
   </style>
 </head>
 
 <body>
 
-<div class="map-title">
-  <b>Perennial Streams</b><br>
-  Static hydrography (NHD)
-</div>
-
 <div id="map"></div>
 
-<!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-  const map = L.map("map").setView([36.9, -121.8], 9);
+  // create map
+  var map = L.map("map").setView([36.9, -121.8], 9);
 
+  // OSM basemap
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "© OpenStreetMap contributors"
   }).addTo(map);
 
+  // load perennial streams
   fetch("data/perennial_bay_south.geojson")
-    .then(res => res.json())
-    .then(data => {
-      L.geoJSON(data, {
-        style: {
-          color: "#1f78b4",
-          weight: 2,
-          opacity: 0.85
-        }
-      }).addTo(map);
-    })
-    .catch(err => {
-      console.error(err);
-      alert("GeoJSON failed to load");
+    .then(r => r.json())
+    .then(d => {
+      L.geoJSON(d).addTo(map);
     });
 </script>
+
+</body>
+</html>
+
 
 </body>
 </html>
