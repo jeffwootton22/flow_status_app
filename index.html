@@ -1,1 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Water Sources – Perennial Streams</title>
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-o9N1j7kP6+gf9kZZgwyXR0vQUNBM8DT6vKrrf5g5pKw="
+    crossorigin=""
+  />
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      height: 100%;
+      width: 100%;
+    }
+
+    .map-title {
+      position: absolute;
+      top: 10px;
+      left: 50px;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-family: sans-serif;
+      font-size: 14px;
+      box-shadow: 0 0 4px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="map-title">
+  <b>Perennial Streams</b><br>
+  Static hydrography (NHD)
+</div>
+
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-oEnb5r3h1k7kB8jU8sELpAo0P5PLf4KJIp4jOSAm4XQ="
+  crossorigin=""
+></script>
+
+<script>
+  // --------------------------------------------------
+  // MAP SETUP
+  // --------------------------------------------------
+  const map = L.map("map").setView([37.2, -121.9], 8); // Bay Area / South Bay
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "© OpenStreetMap contributors"
+  }).addTo(map);
+
+  // --------------------------------------------------
+  // PERENNIAL STREAMS
+  // --------------------------------------------------
+  fetch("data/perennial_bay_south.geojson")
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Failed to load perennial.geojson");
+      }
+      return response.json();
+    })
+    .then(geojson => {
+      L.geoJSON(geojson, {
+        style: {
+          color: "#1f78b4",
+          weight: 2,
+          opacity: 0.85
+        }
+      }).addTo(map);
+    })
+    .catch(error => {
+      console.error("Stream load error:", error);
+      alert("Could not load perennial streams.");
+    });
+</script>
+
+</body>
+</html>
 
