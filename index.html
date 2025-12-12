@@ -37,7 +37,7 @@
   }).addTo(map);
 
   // load perennial streams
-fetch("data/perennial_bay_south.geojson")
+fetch("data/perennial_bay_south.json")
   .then(r => r.json())
   .then(d => {
     var streams = L.geoJSON(d).addTo(map);
