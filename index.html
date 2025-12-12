@@ -8,8 +8,6 @@
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-o9N1j7kP6+gf9kZZgwyXR0vQUNBM8DT6vKrrf5g5pKw="
-    crossorigin=""
   />
 
   <style>
@@ -49,34 +47,19 @@
 <div id="map"></div>
 
 <!-- Leaflet JS -->
-<script
-  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-  integrity="sha256-oEnb5r3h1k7kB8jU8sELpAo0P5PLf4KJIp4jOSAm4XQ="
-  crossorigin=""
-></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-  // --------------------------------------------------
-  // MAP SETUP
-  // --------------------------------------------------
-  const map = L.map("map").setView([37.2, -121.9], 8); // Bay Area / South Bay
+  const map = L.map("map").setView([36.9, -121.8], 9);
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "© OpenStreetMap contributors"
   }).addTo(map);
 
-  // --------------------------------------------------
-  // PERENNIAL STREAMS
-  // --------------------------------------------------
   fetch("data/perennial_bay_south.geojson")
-    .then(response => {
-      if (!response.ok) {
-        throw new Error("Failed to load perennial.geojson");
-      }
-      return response.json();
-    })
-    .then(geojson => {
-      L.geoJSON(geojson, {
+    .then(res => res.json())
+    .then(data => {
+      L.geoJSON(data, {
         style: {
           color: "#1f78b4",
           weight: 2,
@@ -84,12 +67,13 @@
         }
       }).addTo(map);
     })
-    .catch(error => {
-      console.error("Stream load error:", error);
-      alert("Could not load perennial streams.");
+    .catch(err => {
+      console.error(err);
+      alert("GeoJSON failed to load");
     });
 </script>
 
 </body>
 </html>
+
 
